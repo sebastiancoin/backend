@@ -20,9 +20,9 @@ public class MainClass
 
 	// Adds a user to the "users" collection
 	// loc is an array containing [latitude, longitude]
-	public String add_user(String name, BufferedImage image, double[] loc)
+	public String addUser(String name, BufferedImage image, double[] loc)
 	{
-        return User.add_user(name, image, loc);
+        return User.addUser(name, image, loc);
 	}
 }
 public class User
@@ -39,13 +39,25 @@ public class User
 		document = coll.findOne(new BasicDBObject("_id", id));
 	}
 
-	public static String add_user(String name, BufferedImage image, double[] loc)
+	public void getNearby()
+	{
+		List location = new ArrayList();
+		location.add(new double[] {document.get("loc")[0], document.get("loc")[1]});	// Center of circle
+		location.add((double)1/138);	// Radius
+		BasicDBObject query = new BasicDBObject("loc", new BasicDBObject("$within", new BasicDBObject("$center", circle)));
+	}
+
+	public static String addUser(String name, BufferedImage image, double[] loc)
 	{
 		BasicDBObject user = new BasicDBObject("name", name)
         	.append("image", image)
         	.append("loc", loc);
         coll.insert(user);
         return user.getObjectId("_id");
+	}
+	public void update(double[] new_loc)
+	{
+		
 	}
 }
 
