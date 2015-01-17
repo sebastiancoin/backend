@@ -51,6 +51,10 @@ public class User
         coll.insert(user);
         return user.get("_id").toString();
 	}
+	public BufferedImage getImage()
+	{
+		return document.get("image");
+	}
 	//Initializes a user
 	public void User(String id)
 	{
